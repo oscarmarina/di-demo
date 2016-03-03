@@ -1,0 +1,95 @@
+<link rel="import" href="../../polymer/polymer.html">
+<link rel="import" href="../provider.html">
+<link rel="import" href="../requester.html">
+
+<dom-module id="di-demo">
+  <template>
+    <demo-parent id="parent1" name="Parent One">
+      <demo-child id="child"></demo-child>
+    </demo-parent>
+    <demo-parent id="parent2" name="Parent Two">
+    </demo-parent>
+    <button on-click="reparent">Reparent</button>
+  </template>
+  <script>
+    Polymer({
+      is: 'di-demo',
+
+      reparent() {
+        let child = this.$.child;
+        let currentParent = child.parentElement;
+        if (currentParent === this.$.parent1) {
+          this.$.parent2.appendChild(child);
+        } else {
+          this.$.parent1.appendChild(child);
+        }
+      },
+    });
+  </script>
+</dom-module>
+
+<dom-module id="demo-parent">
+  <template>
+    <style>
+      :host {
+        display: block;
+        margin: 8px;
+        padding: 8px;
+        background: #BBDEFB;
+        border: solid 1px #0D47A1;
+        height: 150px;
+        font-family: arial, sans;
+      }
+      h1 {
+        margin: 0;
+      }
+    </style>
+    <h1>{{id}}</h1>
+    <content></content>
+  </template>
+  <script>
+    define('demo-parent', ['di/ProviderBehavior'], (ProviderBehavior) => {
+      Polymer({
+        is: 'demo-parent',
+
+        behaviors: [ProviderBehavior],
+
+        created() {
+          this.provideInstance('name', this.getAttribute('name'));
+        }
+      });
+    });
+  </script>
+</dom-module>
+
+<dom-module id="demo-child">
+  <template>
+    <style>
+      :host {
+        display: block;
+        border: solid 1px #FF6F00;
+        background: #FFECB3;
+        padding: 4px;
+        margin: 4px;
+      }
+      h2: {
+        margin: 0;
+      }
+    </style>
+    <h2>Child</h2>
+    <p>Parent: {{parentName}}</p>
+  </template>
+  <script>
+    define('demo-child', ['di/RequesterBehavior'], (ResolverBehavior) => {
+      Polymer({
+        is: 'demo-child',
+
+        behaviors: [ResolverBehavior],
+
+        attached() {
+          this.parentName = this.requestInstance('name');
+        }
+      });
+    });
+  </script>
+</dom-module>
