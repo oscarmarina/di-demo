@@ -1,5 +1,5 @@
 <script>
-  define('di/ProviderBehavior', () => ({
+  Polymer.ProviderBehavior = {
 
     created() {
       this._providers = new Map();
@@ -23,5 +23,5 @@
       this._providers.set(key, () => instance);
     },
 
-  }));
+  };
 </script>

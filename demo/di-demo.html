@@ -48,16 +48,15 @@
     <content></content>
   </template>
   <script>
-    define('demo-parent', ['di/ProviderBehavior'], (ProviderBehavior) => {
-      Polymer({
-        is: 'demo-parent',
+    Polymer({
+      is: 'demo-parent',
 
-        behaviors: [ProviderBehavior],
+      behaviors: [Polymer.ProviderBehavior],
 
-        created() {
-          this.provideInstance('name', this.getAttribute('name'));
-        }
-      });
+      created() {
+        this.provideInstance('name', this.getAttribute('name'));
+      },
+
     });
   </script>
 </dom-module>
@@ -80,16 +79,14 @@
     <p>Parent: {{parentName}}</p>
   </template>
   <script>
-    define('demo-child', ['di/RequesterBehavior'], (ResolverBehavior) => {
-      Polymer({
-        is: 'demo-child',
+    Polymer({
+      is: 'demo-child',
 
-        behaviors: [ResolverBehavior],
+      behaviors: [Polymer.RequesterBehavior],
 
-        attached() {
-          this.parentName = this.requestInstance('name');
-        }
-      });
+      attached() {
+        this.parentName = this.requestInstance('name');
+      }
     });
   </script>
 </dom-module>

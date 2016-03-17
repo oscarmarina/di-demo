@@ -1,5 +1,5 @@
 <script>
-  define('di/RequesterBehavior', () => ({
+  Polymer.RequesterBehavior = {
 
     requestProvider(key) {
       let event = new CustomEvent('request-provider', {
@@ -19,5 +19,11 @@
       return this.requestProvider(key)();
     },
 
-  }));
+    value(key) {
+      return function() {
+        return this.requestInstance(key);
+      }
+    },
+
+  };
 </script>
